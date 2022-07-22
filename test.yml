@@ -1,0 +1,245 @@
+openapi: 3.0.0
+info:
+  title: 4TT
+  version: 1.0.0
+servers:
+  - url: http://52.172.28.78
+  - url: http://4thoughtsystems.com
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+paths:
+  /flower/api/workers:
+    get:
+      tags:
+        - General
+      summary: Get Flower Workers
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /auth/users:
+    post:
+      tags:
+        - General
+      summary: Auth Users
+      description: This endpoint will add new user to DB
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: admin@4thoughtglobal.com
+                password: admin
+      security:
+        - basicAuth: []
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Basic c2t5YWRtaW46SGpaUm83RGc=
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /auth/sessions:
+    post:
+      tags:
+        - General
+      summary: Auth Sessions (Get Cookie)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: parth@4thoughtglobal.com
+                password: parth
+      security:
+        - basicAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /services/executeAlgorithm:
+    post:
+      tags:
+        - General
+      summary: Execute Algorithm
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                algorithm:
+                  nodes:
+                    - nodeId: category_in0
+                      nodeType: multiTimeSeriesNode
+                      multiTimeSeriesNode:
+                        symbols:
+                          - ORCL
+                          - MSFT
+                    - nodeId: rebalancePortfolioNode_in1
+                      nodeType: rebalancePortfolioNode
+                      rebalancePortfolioNode:
+                        symbolWeights:
+                          ORCL: 0.9
+                          MSFT: 0.1
+                  edges:
+                    - parent: category_in0
+                      children:
+                        - rebalancePortfolioNode_in1
+                      argumentNames:
+                        - null
+                capitalBase: 1000000
+                startTimestamp: '2021-08-09'
+                endTimestamp: '2022-02-09'
+                blockLibrary: {}
+                nodeAssignments: {}
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: De9v60XPHzXIZioScwFicoHM7ahaJ7cybVey/VOg6GQ=
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /services/createWatchlist:
+    post:
+      tags:
+        - General
+      summary: Create Watchlist
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                symbols:
+                  - IBM
+                  - XOM
+                name: e2
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /services/jobs:
+    get:
+      tags:
+        - General
+      summary: Get Celery Jobs
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /flower/api/tasks:
+    get:
+      tags:
+        - General
+      summary: Get Flower Tasks
+      parameters:
+        - name: offset
+          in: query
+          schema:
+            type: integer
+          example: '0'
+        - name: state
+          in: query
+          schema:
+            type: string
+          example: FAILURE
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /services/jobKill/3061c536-9ad3-4cdd-a92c-a75a0747e79e:
+    get:
+      tags:
+        - General
+      summary: Kill Celery Job
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /flower/api/task/info/8438147f-1f1c-48fe-9887-d6f8824fb058:
+    get:
+      tags:
+        - General
+      summary: Specific Task Info
+      parameters:
+        - name: offset
+          in: query
+          schema:
+            type: integer
+          example: '0'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /flower/api/task/abort/306c634c-b95c-4cc2-8f6a-51bb82b5e600:
+    post:
+      tags:
+        - General
+      summary: Abort Flower Task
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /flower/api/task/revoke/a84d069e-39b1-4097-be34-284f0153f784:
+    post:
+      tags:
+        - General
+      summary: Revoke Flower Task
+      requestBody:
+        content: {}
+      parameters:
+        - name: terminate
+          in: query
+          schema:
+            type: boolean
+          example: 'true'
+        - name: signal
+          in: query
+          schema:
+            type: string
+          example: SIGKILL
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
